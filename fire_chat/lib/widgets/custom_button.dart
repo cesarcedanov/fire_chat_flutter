@@ -4,7 +4,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback callback;
   final String text;
 
-  const  CustomButton({this.callback, this.text});
+  const CustomButton({this.callback, this.text});
 
   @override
   Widget build(BuildContext context) {

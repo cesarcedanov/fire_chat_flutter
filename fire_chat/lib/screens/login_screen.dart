@@ -51,8 +51,9 @@ class _LoginScreenState extends State<LoginScreen> {
               keyboardType: TextInputType.emailAddress,
               onChanged: (value) => email = value,
               decoration: InputDecoration(
-                  hintText: 'Enter your Email',
-                  border: const OutlineInputBorder()),
+                hintText: 'Enter your Email',
+                border: const OutlineInputBorder(),
+              ),
             ),
             SizedBox(
               height: 40,
@@ -62,8 +63,9 @@ class _LoginScreenState extends State<LoginScreen> {
               autocorrect: false,
               onChanged: (value) => password = value,
               decoration: InputDecoration(
-                  hintText: 'Enter your Password',
-                  border: const OutlineInputBorder()),
+                hintText: 'Enter your Password',
+                border: const OutlineInputBorder(),
+              ),
             ),
             CustomButton(
               text: 'Login',

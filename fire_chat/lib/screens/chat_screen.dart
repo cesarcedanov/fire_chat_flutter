@@ -20,7 +20,7 @@ class _ChatScreenState extends State<ChatScreen> {
   TextEditingController messageController = TextEditingController();
   ScrollController scrollController = ScrollController();
 
-  Future<void> callBack() async {
+  Future<void> _sendMessage() async {
     if (messageController.text.isNotEmpty) {
       await _firestore.collection('messages').add({
         'text': messageController.text,
@@ -64,47 +64,59 @@ class _ChatScreenState extends State<ChatScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Expanded(
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: _firestore
-                      .collection('messages')
-                      .orderBy('sent_date')
-                      .snapshots(),
-                  builder: (ctx, snapshot) {
-                    if (!snapshot.hasData)
-                      return Center(child: CircularProgressIndicator());
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: _firestore
+                        .collection('messages')
+                        .orderBy('sent_date')
+                        .snapshots(),
+                    builder: (ctx, snapshot) {
+                      if (!snapshot.hasData)
+                        return Center(child: CircularProgressIndicator());
 
-                    List<DocumentSnapshot> docs = snapshot.data.documents;
-                    List<Widget> messages = docs
-                        .map((doc) => Message(
-                              from: doc.data['from'],
-                              text: doc.data['text'],
-                              isFromCurrentUser:
-                                  widget.user.email == doc.data['from'],
-                            ))
-                        .toList();
-                    return ListView(
-                      controller: scrollController,
-                      children: <Widget>[...messages],
-                    );
-                  },
+                      List<DocumentSnapshot> docs = snapshot.data.documents;
+                      List<Widget> messages = docs
+                          .map((doc) => Message(
+                                from: doc.data['from'],
+                                text: doc.data['text'],
+                                isFromCurrentUser:
+                                    widget.user.email == doc.data['from'],
+                              ))
+                          .toList();
+                      return ListView(
+                        controller: scrollController,
+                        children: <Widget>[...messages],
+                      );
+                    },
+                  ),
                 ),
+              ),
+              Divider(
+                height: 1,
               ),
               Container(
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      child: TextField(
-                        onSubmitted: (_) => callBack(),
-                        controller: messageController,
-                        decoration: InputDecoration(
-                          hintText: 'Enter a Message...',
-                          border: const OutlineInputBorder(),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                          vertical: 5,
+                        ),
+                        child: TextField(
+                          onSubmitted: (_) => _sendMessage(),
+                          controller: messageController,
+                          decoration: InputDecoration(
+                            hintText: 'Enter a Message...',
+                            border: const OutlineInputBorder(),
+                          ),
                         ),
                       ),
                     ),
                     SendButton(
                       text: 'Send',
-                      callback: callBack,
+                      callback: _sendMessage,
                     )
                   ],
                 ),

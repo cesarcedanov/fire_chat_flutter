@@ -8,10 +8,13 @@ class SendButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      color: Colors.orange,
-      onPressed: callback,
-      child: Text(text),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      child: FlatButton(
+        color: Colors.orange,
+        onPressed: callback,
+        child: Text(text),
+      ),
     );
   }
 }
